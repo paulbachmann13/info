@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exercices Python — Série 2</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,600;1,400&family=Nunito:wght@400;600;700;800&display=swap');
+
+:root {
+  --bg: #f5f4f0;
+  --surface: #ffffff;
+  --surface2: #f0eeea;
+  --border: #ddd9d0;
+  --text: #1a1814;
+  --text-muted: #7a746a;
+  --accent: #1a6b4a;
+  --accent-bg: #e6f5ed;
+  --green: #1a7a4a;
+  --green-bg: #e6f5ed;
+  --orange: #b85c00;
+  --orange-bg: #fff3e0;
+  --blue: #0f5fa8;
+  --blue-bg: #e8f0fc;
+  --red: #b52020;
+  --red-bg: #fdeaea;
+  --purple: #5b4fcf;
+  --purple-bg: #efedfc;
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Nunito', sans-serif;
+  --radius: 14px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  min-height: 100vh;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.site-header {
+  background: var(--accent);
+  color: #fff;
+  padding: 40px 32px 36px;
+}
+
+.site-header-inner { max-width: 800px; margin: 0 auto; }
+
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  margin-bottom: 10px;
+}
+
+.site-header h1 {
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 10px;
+}
+
+.site-header p { opacity: 0.85; max-width: 500px; font-size: 15px; }
+
+.progress-wrap {
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.progress-track {
+  flex: 1;
+  height: 8px;
+  background: rgba(255,255,255,0.25);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #fff;
+  border-radius: 999px;
+  transition: width 0.4s ease;
+  width: 0%;
+}
+
+.progress-txt {
+  font-family: var(--mono);
+  font-size: 12px;
+  opacity: 0.8;
+  white-space: nowrap;
+}
+
+.filters {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px 32px 0;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pill {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-family: var(--sans);
+  font-weight: 600;
+  border: 2px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.pill:hover { border-color: var(--accent); color: var(--accent); }
+.pill.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+main {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px 32px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.card {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.card.done { border-color: var(--green); }
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 22px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s;
+}
+
+.card-header:hover { background: var(--surface2); }
+.card.open .card-header { border-bottom: 2px solid var(--border); }
+
+.card-num {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--accent-bg);
+  color: var(--accent);
+  border-radius: 8px;
+  padding: 5px 10px;
+  flex-shrink: 0;
+}
+
+.card.done .card-num { background: var(--green-bg); color: var(--green); }
+
+.card-title-block { flex: 1; }
+.card-title { font-size: 16px; font-weight: 700; }
+
+.card-tags {
+  display: flex;
+  gap: 6px;
+  margin-top: 3px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.tag-fonction { background: var(--purple-bg); color: var(--purple); }
+.tag-for      { background: var(--blue-bg);   color: var(--blue); }
+.tag-while    { background: var(--orange-bg);  color: var(--orange); }
+.tag-liste    { background: var(--red-bg);     color: var(--red); }
+.tag-new      { background: #fff3cd; color: #7a5c00; }
+
+.card-chevron {
+  color: var(--text-muted);
+  font-size: 18px;
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+
+.card.open .card-chevron { transform: rotate(180deg); }
+
+.card-body { display: none; flex-direction: column; gap: 0; }
+.card.open .card-body { display: flex; }
+
+.course-block {
+  background: #fffbf0;
+  border-bottom: 2px solid #ffe082;
+  padding: 18px 22px;
+}
+
+.course-block .section-label {
+  color: #7a5c00;
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 10px;
+}
+
+.course-text { font-size: 14px; line-height: 1.75; color: #3a2f00; }
+.course-text p + p { margin-top: 8px; }
+
+.course-text code {
+  font-family: var(--mono);
+  background: #fff3cd;
+  border: 1px solid #ffe082;
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 12.5px;
+  color: #7a4f00;
+}
+
+.course-text strong { font-weight: 700; }
+
+.exo-content {
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-bottom: 2px solid var(--border);
+}
+
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.consigne { font-size: 15px; line-height: 1.75; }
+.consigne strong { font-weight: 700; color: var(--purple); }
+.consigne em { font-style: italic; color: var(--text-muted); }
+
+.consigne code {
+  font-family: var(--mono);
+  background: var(--purple-bg);
+  border: 1px solid #ccc8f0;
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 12.5px;
+  color: var(--purple);
+}
+
+.expected-box {
+  background: var(--surface2);
+  border: 2px solid var(--border);
+  border-left: 4px solid var(--blue);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+
+.expected-box .section-label { color: var(--blue); margin-bottom: 6px; }
+
+pre {
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.85;
+  background: #1e1e2e;
+  color: #cdd6f4;
+  border-radius: 10px;
+  padding: 16px 20px;
+  overflow-x: auto;
+}
+
+.expected-box pre {
+  background: transparent;
+  color: var(--text-muted);
+  padding: 0;
+  border-radius: 0;
+}
+
+.kw  { color: #cba6f7; }
+.fn  { color: #89b4fa; }
+.str { color: #a6e3a1; }
+.num { color: #fab387; }
+.cm  { color: #6c7086; font-style: italic; }
+.op  { color: #89dceb; }
+.bi  { color: #f9e2af; }
+.ret { color: #f38ba8; }
+
+.accordion-wrap {
+  display: flex;
+  flex-direction: column;
+  border-top: 2px solid var(--border);
+}
+
+.accordion { border-bottom: 1px solid var(--border); overflow: hidden; }
+.accordion:last-child { border-bottom: none; }
+
+.accordion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 22px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 14px;
+  transition: background 0.15s;
+  user-select: none;
+}
+
+.accordion-header:hover { background: var(--surface2); }
+.accordion.hint .accordion-header { color: var(--orange); }
+.accordion.correction .accordion-header { color: var(--green); }
+
+.accordion-icon { transition: transform 0.2s; }
+.accordion.open .accordion-icon { transform: rotate(180deg); }
+
+.accordion-body {
+  display: none;
+  padding: 16px 22px 20px;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--surface2);
+  border-top: 1px solid var(--border);
+}
+
+.accordion.open .accordion-body { display: flex; }
+
+.hint-list { display: flex; flex-direction: column; gap: 10px; }
+
+.hint-step {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.hint-step-num {
+  background: var(--orange-bg);
+  color: var(--orange);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 6px;
+  padding: 3px 8px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.hint-step code {
+  font-family: var(--mono);
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 12px;
+  color: var(--purple);
+}
+
+.card-footer {
+  padding: 16px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.done-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 20px;
+  border-radius: 999px;
+  border: 2px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.done-btn:hover { border-color: var(--green); color: var(--green); background: var(--green-bg); }
+.card.done .done-btn { background: var(--green-bg); border-color: var(--green); color: var(--green); }
+
+@media (max-width: 600px) {
+  .site-header, .filters, main { padding-left: 16px; padding-right: 16px; }
+  .card-header, .exo-content, .accordion-header, .accordion-body { padding-left: 16px; padding-right: 16px; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <div class="eyebrow">// Informatique · Classe de Seconde · Série 2</div>
+    <h1>Exercices Python 🐍</h1>
+    <p>10 nouveaux exercices — boucle while, fonctions avancées, listes, et chaînes de caractères. Même format qu'avant : mini cours, indices, correction.</p>
+    <div class="progress-wrap">
+      <div class="progress-track"><div class="progress-fill" id="progressBar"></div></div>
+      <div class="progress-txt" id="progressTxt">0 / 10</div>
+    </div>
+  </div>
+</header>
+
+<div class="filters">
+  <button class="pill active" onclick="filter('all',this)">Tous</button>
+  <button class="pill" onclick="filter('while',this)">Boucle while</button>
+  <button class="pill" onclick="filter('for',this)">Boucle for</button>
+  <button class="pill" onclick="filter('fonction',this)">Fonctions</button>
+  <button class="pill" onclick="filter('liste',this)">Listes</button>
+  <button class="pill" onclick="filter('chaine',this)">Chaînes</button>
+</div>
+
+<main>
+
+<!-- ══ EXO 11 ══ -->
+<div class="card" id="c11" data-tags="while">
+  <div class="card-header" onclick="toggle('c11')">
+    <div class="card-num">11</div>
+    <div class="card-title-block">
+      <div class="card-title">Compte à rebours</div>
+      <div class="card-tags">
+        <span class="tag tag-while">boucle while</span>
+        <span class="tag tag-new">✦ nouveau</span>
+      </div>
+    </div>
+    <span class="card-chevron">▾</span>
+  </div>
+  <div class="card-body">
+
+    <div class="course-block">
+      <div class="section-label">📖 Ce qu'il faut savoir — la boucle while</div>
+      <div class="course-text">
+        <p>La boucle <code>while</code> répète un bloc de code <strong>tant qu'une condition est vraie</strong>. Elle s'arrête dès que la condition devient fausse.</p>
+        <p><code>while condition :</code><br>&nbsp;&nbsp;&nbsp;&nbsp;<code># code répété</code></p>
+        <p>Exemple — afficher 5, 4, 3, 2, 1 :</p>
+        <p><code>n = 5</code><br><code>while n > 0 :</code><br>&nbsp;&nbsp;&nbsp;&nbsp;<code>print(n)</code><br>&nbsp;&nbsp;&nbsp;&nbsp;<code>n = n - 1</code></p>
+        <p>⚠️ <strong>Attention :</strong> il faut toujours que la condition finisse par devenir fausse, sinon la boucle tourne indéfiniment (boucle infinie) !</p>
+      </div>
+    </div>
+
+    <div class="exo-content">
+      <div>
+        <div class="section-label">Énoncé</div>
+        <p class="consigne">
+          Écris une fonction <code>compte_a_rebours(n)</code> qui affiche tous les nombres de <code>n</code> jusqu'à 1, puis affiche <strong>"Décollage ! 🚀"</strong>.
+          <br><br>Utilise une boucle <code>while</code>. Teste avec <code>compte_a_rebours(5)</code>.
+        </p>
+      </div>
+      <div class="expected-box">
+        <div class="section-label">Sortie attendue</div>
+        <pre>5
+4
+3
+2
+1
+Décollage ! 🚀</pre>
+      </div>
+    </div>
+
+    <div class="accordion-wrap">
+      <div class="accordion hint" id="h11">
+        <div class="accordion-header" onclick="toggleAcc('h11')">💡 Indices <span class="accordion-icon">▾</span></div>
+        <div class="accordion-body">
+          <div class="hint-list">
+            <div class="hint-step"><span class="hint-step-num">1</span><span>Dans la fonction, crée une variable <code>compteur = n</code></span></div>
+            <div class="hint-step"><span class="hint-step-num">2</span><span>Boucle : <code>while compteur > 0 :</code></span></div>
+            <div class="hint-step"><span class="hint-step-num">3</span><span>Dans la boucle : affiche <code>compteur</code>, puis <code>compteur -= 1</code> (sinon boucle infinie !)</span></div>
+            <div class="hint-step"><span class="hint-step-num">4</span><span>Après la boucle (moins indenté) : <code>print("Décollage ! 🚀")</code></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion correction" id="corr11">
+        <div class="accordion-header" onclick="toggleAcc('corr11')">✅ Correction <span class="accordion-icon">▾</span></div>
+        <div class="accordion-body">
+          <pre><span class="kw">def</span> <span class="fn">compte_a_rebours</span>(n) <span class="op">:</span>
+    compteur <span class="op">=</span> n
+    <span class="kw">while</span> compteur <span class="op">&gt;</span> <span class="num">0</span> <span class="op">:</span>
+        <span class="bi">print</span>(compteur)
+        compteur <span class="op">-=</span> <span class="num">1</span>
+    <span class="bi">print</span>(<span class="str">"Décollage ! 🚀"</span>)
+
+<span class="fn">compte_a_rebours</span>(<span class="num">5</span>)</pre>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer"><button class="done-btn" onclick="markDone('c11')"><span class="done-icon">○</span> Marquer comme fait</button></div>
+  </div>
+</div>
+
+
+<!-- ══ EXO 12 ══ -->
+<div class="card" id="c12" data-tags="while">
+  <div class="card-header" onclick="toggle('c12')">
+    <div class="card-num">12</div>
+    <div class="card-title-block">
+      <div class="card-title">La suite de Syracuse</div>
+      <div class="card-tags">
+        <span class="tag tag-while">boucle while</span>
+        <span class="tag tag-fonction">fonction</span>
+      </div>
+    </div>
+    <span class="card-chevron">▾</span>
+  </div>
+  <div class="card-body">
+
+    <div class="course-block">
+      <div class="section-label">📖 Ce qu'il faut savoir</div>
+      <div class="course-text">
+        <p>Le <code>while</code> est parfait quand on ne sait pas <strong>à l'avance</strong> combien de fois la boucle va tourner. Contrairement au <code>for</code> qui parcourt une liste ou un range fixe.</p>
+        <p>On peut aussi compter les tours avec un compteur : <code>nb_tours = 0</code> puis <code>nb_tours += 1</code> dans la boucle.</p>
+      </div>
+    </div>
+
+    <div class="exo-content">
+      <div>
+        <div class="section-label">Énoncé</div>
+        <p class="consigne">
+          La suite de Syracuse part d'un entier <code>n</code> et applique la règle suivante jusqu'à arriver à 1 :<br><br>
+          — si <code>n</code> est <strong>pair</strong> → on divise par 2<br>
+          — si <code>n</code> est <strong>impair</strong> → on multiplie par 3 et on ajoute 1<br><br>
+          Écris une fonction <code>syracuse(n)</code> qui affiche tous les termes de la suite et retourne le nombre d'étapes.
+          <br><br>Teste avec <code>syracuse(6)</code>.
+        </p>
+      </div>
+      <div class="expected-box">
+        <div class="section-label">Sortie attendue pour syracuse(6)</div>
+        <pre>6 → 3 → 10 → 5 → 16 → 8 → 4 → 2 → 1
+Nombre d'étapes : 8</pre>
+      </div>
+    </div>
+
+    <div class="accordion-wrap">
+      <div class="accordion hint" id="h12">
+        <div class="accordion-header" onclick="toggleAcc('h12')">💡 Indices <span class="accordion-icon">▾</span></div>
+        <div class="accordion-body">
+          <div class="hint-list">
+            <div class="hint-step"><span class="hint-step-num">1</span><span>Boucle : <code>while n != 1 :</code></span></div>
+            <div class="hint-step"><span class="hint-step-num">2</span><span>Dans la boucle : teste si <code>n % 2 == 0</code> (pair) → <code>n = n // 2</code>, sinon → <code>n = 3 * n + 1</code></span></div>
+            <div class="hint-step"><span class="hint-step-num">3</span><span>Compte les étapes avec <code>etapes += 1</code> à chaque tour.</span></div>
+            <div class="hint-step"><span class="hint-step-num">4</span><span>Pour l'affichage en ligne avec des flèches, tu peux utiliser <code>print(n, end=" → ")</code> avant de modifier n, puis <code>print(1)</code> à la fin.</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion correction" id="corr12">
+        <div class="accordion-header" onclick="toggleAcc('corr12')">✅ Correction <span class="accordion-icon">▾</span></div>
+        <div class="accordion-body">
+          <pre><span class="kw">def</span> <span class="fn">syracuse</span>(n) <span class="op">:</span>
+    etapes <span class="op">=</span> <span class="num">0</span>
+    <span class="kw">while</span> n <span class="op">!=</span> <span class="num">1</span> <span class="op">:</span>
+        <span class="bi">print</span>(n, end<span class="op">=</span><span class="str">" → "</span>)
+        <span class="kw">if</span> n <span class="op">%</span> <span class="num">2</span> <span class="op">==</span> <span class="num">0</span> <span class="op">:</span>
+            n <span class="op">=</span> n <span class="op">//</span> <span class="num">2</span>
+        <span class="kw">else</span> <span class="op">:</span>
+            n <span class="op">=</span> <span class="num">3</span> <span class="op">*</span> n <span class="op">+</span> <span class="num">1</span>
+        etapes <span class="op">+=</span> <span class="num">1</span>
+    <span class="bi">print</span>(<span class="num">1</span>)
+    <span class="bi">print</span>(<span class="fn">f</span><span class="str">"Nombre d'étapes : {etapes}"</span>)
+    <span class="ret">return</span> etapes
+
+<span class="fn">syracuse</span>(<span class="num">6</span>)</pre>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer"><button class="done-btn" onclick="markDone('c12')"><span class="done-icon">○</span> Marquer comme fait</button></div>
+  </div>
+</div>
+
+
+<!-- ══ EXO 13 ══ -->
+<div class="card" id="c13" data-tags="while fonction">
+  <div class="card-header" onclick="toggle('c13')">
+    <div class="card-num">13</div>
+    <div class="card-title-block">
+      <div class="card-title">Factorielle</div>
+      <div class="card-tags">
+        <span class="tag tag-while">boucle while</span>
+        <span class="tag tag-fonction">fonction</span>
+      </div>
+    </div>
+    <span class="card-chevron">▾</span>
+  </div>
+  <div class="card-body">
+
+    <div class="course-block">
+      <div class="section-label">📖 Ce qu'il faut savoir</div>
+      <div class="course-text">
+        <p>La <strong>factorielle</strong> de n (notée n!) est le produit de tous les entiers de 1 à n.</p>
+        <p>Exemple : <code>5! = 1 × 2 × 3 × 4 × 5 = 120</code></p>
+        <p>On peut accumuler un produit exactement comme on accumule une somme, mais en partant de <code>1</code> (pas de <code>0</code>, sinon tout vaut 0 !) et en multipliant au lieu d'additionner.</p>
+      </div>
+    </div>
+
+    <div class="exo-content">
+      <div>
+        <div class="section-label">Énoncé</div>
+        <p class="consigne">
+          Écris une fonction <code>factorielle(n)</code> qui calcule et retourne n! avec une boucle <code>while</code>.
+          <br><br>
+          Teste avec <code>factorielle(5)</code>, <code>factorielle(10)</code>, <code>factorielle(0)</code>.
+          <br><br><em>Note : par convention, 0! = 1.</em>
+        </p>
+      </div>
+      <div class="expected-box">
+        <div class="section-label">Sortie attendue</div>
+        <pre>5! = 120
+10! = 3628800
+0! = 1</pre>
+      </div>
+    </div>
+
+    <div class="accordion-wrap">
+      <div class="accordion hint" id="h13">
+        <div class="accordion-header" onclick="toggleAcc('h13')">💡 Indices <span class="accordion-icon">▾</span></div>
+        <div class="accordion-body">
+          <div class="hint-list">
+            <div class="hint-step"><span class="hint-step-num">1</span><span>Crée <code>produit = 1</code> et <code>i = 1</code> au début de la fonction.</span></div>
+            <div class="hint-step"><span class="hint-step-num">2</span><span>Boucle : <code>while i <= n :</code></span></div>
+            <div class="hint-step"><span class="hint-step-num">3</span><span>Dans la boucle : <code>produit *= i</code> puis <code>i += 1</code></span></div>
+            <div class="hint-step"><span class="hint-step-num">4</span><span>Retourne <code>produit</code>. Si <code>n = 0</code>, la boucle ne tourne pas du tout et <code>produit</code> vaut 1 — c'est exactement ce qu'on veut !</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion correction" id="corr13">
+        <div class="accordion-header" onclick="toggleAcc('corr13')">✅ Correction <span class="accordion-icon">▾</span></div>
+        <div class="accordion-body">
+          <pre><span class="kw">def</span> <span class="fn">factorielle</span>(n) <span class="op">:</span>
+    produit <span class="op">=</span> <span class="num">1</span>
+    i <span class="op">=</span> <span class="num">1</span>
+    <span class="kw">while</span> i <span class="op">&lt;=</span> n <span class="op">:</span>
+        produit <span class="op">*=</span> i
+        i <span class="op">+=</span> <span class="num">1</span>
+    <span class="ret">return</span> produit
+
+<span class="bi">print</span>(<span class="fn">f</span><span class="str">"5! = {factorielle(5)}"</span>)
+<span class="bi">print</span>(<span class="fn">f</span><span class="str">"10! = {factorielle(10)}"</span>)
+<span class="bi">print</span>(<span class="fn">f</span><span class="str">"0! = {factorielle(0)}"</span>)</pre>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer"><button class="done-btn" onclick="markDone('c13')"><span class="done-icon">○</span> Marquer comme fait</button></div>
+  </div>
+</div>
+
+
+<!-- ══ EXO 14 ══ -->
+<div class="card" id="c14" data-tags="chaine fonction">
+  <div class="card-header" onclick="toggle('c14')">
+    <div class="card-num">14</div>
+    <div class="card-title-block">
+      <div class="card-title">Jouer avec les chaînes</div>
+      <div class="card-tags">
+        <span class="tag tag-chaine" style="background:#f0e6ff;color:#6b21a8;">chaînes</span>
+        <span class="tag tag-new">✦ nouveau</span>
+      </div>
+    </div>
+    <span class="card-chevron">▾</span>
+  </div>
+  <div class="card-body">
+
+    <div class="course-block">
+      <div class="section-label">📖 Ce qu'il faut savoir — les chaînes de caractères</div>
+      <div class="course-text">
+        <p>Une <strong>chaîne de caractères</strong> (string) est une suite de lettres entre guillemets : <code>"Bonjour"</code>.</p>
+        <p>On peut accéder aux lettres une par une comme une liste : <code>"Bonjour"[0]</code> → <code>"B"</code>, <code>"Bonjour"[3]</code> → <code>"j"</code>.</p>
+        <p><code>len("Bonjour")</code> → <code>7</code> (nombre de caractères).</p>
+        <p>On peut parcourir les lettres : <code>for lettre in mot :</code></p>
+        <p>Quelques méthodes utiles : <code>mot.upper()</code> → majuscules, <code>mot.lower()</code> → minuscules, <code>mot.count("a")</code> → nombre de "a".</p>
+      </div>
+    </div>
+
+    <div class="exo-content">
+      <div>
+        <div class="section-label">Énoncé</div>
+        <p class="consigne">
+          Écris trois fonctions :<br><br>
+          — <code>nb_voyelles(mot)</code> : retourne le nombre de voyelles dans le mot<br>
+          — <code>inverser(mot)</code> : retourne le mot à l'envers (ex: <code>"python"</code> → <code>"nohtyp"</code>)<br>
+          — <code>est_palindrome(mot)</code> : retourne <code>True</code> si le mot se lit pareil dans les deux sens (ex: <code>"radar"</code>)<br><br>
+          Teste les trois avec plusieurs mots.
+        </p>
+      </div>
+      <div class="expected-box">
+        <div class="section-label">Sortie attendue</div>
+        <pre>nb_voyelles("python") = 1
+inverser("python") = nohtyp
+est_palindrome("radar") = True
+est_palindrome("python") = False</pre>
+      </div>
+    </div>
+
+    <div class="accordion-wrap">
+      <div class="accordion hint" id="h14">
+        <div class="accordion-header" onclick="toggleAcc('h14')">💡 Indices <span class="accordion-icon">▾</span></div>
+        <div class="accordion-body">
+          <div class="hint-list">
+            <div class="hint-step"><span class="hint-step-num">1</span><span>Pour les voyelles : crée <code>voyelles = "aeiouAEIOU"</code> puis boucle sur les lettres du mot. Si <code>lettre in voyelles</code> → compte.</span></div>
+            <div class="hint-step"><span class="hint-step-num">2</span><span>Pour inverser : en Python on peut faire <code>mot[::-1]</code> — c'est un "slice" qui lit la chaîne à l'envers.</span></div>
+            <div class="hint-step"><span class="hint-step-num">3</span><span>Pour palindrome : un mot est palindrome si <code>mot == mot[::-1]</code>. Utilise ta fonction <code>inverser</code> !</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion correction" id="corr14">
+        <div class="accordion-header" onclick="toggleAcc('corr14')">✅ Correction <span class="accordion-icon">▾</span></div>
+        <div class="accordion-body">
+          <pre><span class="kw">def</span> <span class="fn">nb_voyelles</span>(mot) <span class="op">:</span>
+    voyelles <span class="op">=</span> <span class="str">"aeiouAEIOU"</span>
+    compte <span class="op">=</span> <span class="num">0</span>
+    <span class="kw">for</span> lettre <span class="kw">in</span> mot <span class="op">:</span>
+        <span class="kw">if</span> lettre <span class="kw">in</span> voyelles <span class="op">:</span>
+            compte <span class="op">+=</span> <span class="num">1</span>
+    <span class="ret">return</span> compte
+
+<span class="kw">def</span> <span class="fn">inverser</span>(mot) <span class="op">:</span>
+    <span class="ret">return</span> mot[<span class="op">::</span><span class="op">-</span><span class="num">1</span>]
+
+<span class="kw">def</span> <span class="fn">est_palindrome</span>(mot) <span class="op">:</span>
+    <span class="ret">return</span> mot <span class="op">==</span> <span class="fn">inverser</span>(mot)
+
+<span class="bi">print</span>(<span class="fn">f</span><span class="str">'nb_voyelles("python") = {nb_voyelles("python")}'</span>)
+<span class="bi">print</span>(<span class="fn">f</span><span class="str">'inverser("python") = {inverser("python")}'</span>)
+<span class="bi">print</span>(<span class="fn">f</span><span class="str">'est_palindrome("radar") = {est_palindrome("radar")}'</span>)
+<span class="bi">print</span>(<span class="fn">f</span><span class="str">'est_palindrome("python") = {est_palindrome("python")}'</span>)</pre>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer"><button class="done-btn" onclick="markDone('c14')"><span class="done-icon">○</span> Marquer comme fait</button></div>
+  </div>
+</div>
+
+
+<!-- ══ EXO 15 ══ -->
+<div class="card" id="c15" data-tags="for liste fonction">
+  <div class="card-header" onclick="toggle('c15')">
+    <div class="card-num">15</div>
+    <div class="card-title-block">
+      <div class="card-title">Construire une liste avec append</div>
+      <div class="card-tags">
+        <span class="tag tag-liste">liste</span>
+        <span class="tag tag-new">✦ nouveau</span>
+      </div>
+    </div>
+    <span class="card-chevron">▾</span>
+  </div>
+  <div class="card-body">
+
+    <div class="course-block">
+      <div class="section-label">📖 Ce qu'il faut savoir — ajouter à une liste</div>
+      <div class="course-text">
+        <p>On peut construire une liste progressivement en ajoutant des éléments un par un avec <code>.append()</code> :</p>
+        <p><code>ma_liste = []</code> &nbsp;← liste vide<br><code>ma_liste.append(5)</code> &nbsp;← ajoute 5<br><code>ma_liste.append(12)</code> &nbsp;← ajoute 12<br>Résultat : <code>[5, 12]</code></p>
+        <p>C'est très utile dans une boucle pour accumuler des résultats.</p>
+      </div>
+    </div>
+
+    <div class="exo-content">
+      <div>
+        <div class="section-label">Énoncé</div>
+        <p class="consigne">
+          Écris une fonction <code>multiples(n, limite)</code> qui retourne la liste de tous les multiples de <code>n</code> inférieurs ou égaux à <code>limite</code>.
+          <br><br>
+          Exemple : <code>multiples(3, 20)</code> → <code>[3, 6, 9, 12, 15, 18]</code>
+          <br><br>
+          Teste avec <code>multiples(3, 20)</code> et <code>multiples(7, 50)</code>.
+        </p>
+      </div>
+      <div class="expected-box">
+        <div class="section-label">Sortie attendue</div>
+        <pre>Multiples de 3 jusqu'à 20 : [3, 6, 9, 12, 15, 18]
+Multiples de 7 jusqu'à 50 : [7, 14, 21, 28, 35, 42, 49]</pre>
+      </div>
+    </div>
+
+    <div class="accordion-wrap">
+      <div class="accordion hint" id="h15">
+        <div class="accordion-header" onclick="toggleAcc('h15')">💡 Indices <span class="accordion-icon">▾</span></div>
+        <div class="accordion-body">
+          <div class="hint-list">
+            <div class="hint-step"><span class="hint-step-num">1</span><span>Crée une liste vide : <code>resultat = []</code></span></div>
+            <div class="hint-step"><span class="hint-step-num">2</span><span>Boucle avec <code>for i in range(1, limite + 1) :</code></span></div>
+            <div class="hint-step"><span class="hint-step-num">3</span><span>Si <code>i % n == 0</code> → c'est un multiple → <code>resultat.append(i)</code></span></div>
+            <div class="hint-step"><span class="hint-step-num">4</span><span>Retourne <code>resultat</code>.</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion correction" id="corr15">
+        <div class="accordion-header" onclick="toggleAcc('corr15')">✅ Correction <span class="accordion-icon">▾</span></div>
+        <div class="accordion-body">
+          <pre><span class="kw">def</span> <span class="fn">multiples</span>(n, limite) <span class="op">:</span>
+    resultat <span class="op">=</span> []
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(<span class="num">1</span>, limite <span class="op">+</span> <span class="num">1</span>) <span class="op">:</span>
+        <span class="kw">if</span> i <span class="op">%</span> n <span class="op">==</span> <span class="num">0</span> <span class="op">:</span>
+            resultat<span class="op">.</span><span class="fn">append</span>(i)
+    <span class="ret">return</span> resultat
+
+<span class="bi">print</span>(<span class="fn">f</span><span class="str">"Multiples de 3 jusqu'à 20 : {multiples(3, 20)}"</span>)
+<span class="bi">print</span>(<span class="fn">f</span><span class="str">"Multiples de 7 jusqu'à 50 : {multiples(7, 50)}"</span>)</pre>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer"><button class="done-btn" onclick="markDone('c15')"><span class="done-icon">○</span> Marquer comme fait</button></div>
+  </div>
+</div>
+
+
+<!-- ══ EXO 16 ══ -->
+<div class="card" id="c16" data-tags="for liste fonction">
+  <div class="card-header" onclick="toggle('c16')">
+    <div class="card-num">16</div>
+    <div class="card-title-block">
+      <div class="card-title">Filtrer une liste</div>
+      <div class="card-tags">
+        <span class="tag tag-liste">liste</span>
+        <span class="tag tag-for">boucle for</span>
+        <span class="tag tag-fonction">fonction</span>
+      </div>
+    </div>
+    <span class="card-chevron">▾</span>
+  </div>
+  <div class="card-body">
+
+    <div class="course-block">
+      <div class="section-label">📖 Ce qu'il faut savoir</div>
+      <div class="course-text">
+        <p>Filtrer une liste, c'est en construire une nouvelle qui ne contient que les éléments qui vérifient une certaine condition. Le pattern est toujours le même :</p>
+        <p><code>nouvelle = []</code><br><code>for element in ancienne :</code><br>&nbsp;&nbsp;&nbsp;&nbsp;<code>if condition :</code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>nouvelle.append(element)</code></p>
+      </div>
+    </div>
+
+    <div class="exo-content">
+      <div>
+        <div class="section-label">Énoncé</div>
+        <p class="consigne">
+          On te donne : <code>temperatures = [22, 35, 18, 41, 29, 15, 38, 12, 33, 26]</code>
+          <br><br>
+          Écris deux fonctions :<br><br>
+          — <code>canicule(temps)</code> : retourne une nouvelle liste avec uniquement les températures <strong>≥ 30°C</strong><br>
+          — <code>frais(temps)</code> : retourne une nouvelle liste avec les températures <strong>&lt; 20°C</strong><br><br>
+          Affiche les deux résultats.
+        </p>
+      </div>
+      <div class="expected-box">
+        <div class="section-label">Sortie attendue</div>
+        <pre>Jours de canicule (≥30°C) : [35, 41, 38, 33]
+Jours frais (&lt;20°C) : [18, 15, 12]</pre>
+      </div>
+    </div>
+
+    <div class="accordion-wrap">
+      <div class="accordion hint" id="h16">
+        <div class="accordion-header" onclick="toggleAcc('h16')">💡 Indices <span class="accordion-icon">▾</span></div>
+        <div class="accordion-body">
+          <div class="hint-list">
+            <div class="hint-step"><span class="hint-step-num">1</span><span>Même structure pour les deux fonctions : liste vide, boucle <code>for t in temps</code>, condition, <code>append</code>.</span></div>
+            <div class="hint-step"><span class="hint-step-num">2</span><span>Pour <code>canicule</code> : <code>if t >= 30 :</code></span></div>
+            <div class="hint-step"><span class="hint-step-num">3</span><span>Pour <code>frais</code> : <code>if t < 20 :</code></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion correction" id="corr16">
+        <div class="accordion-header" onclick="toggleAcc('corr16')">✅ Correction <span class="accordion-icon">▾</span></div>
+        <div class="accordion-body">
+          <pre><span class="kw">def</span> <span class="fn">canicule</span>(temps) <span class="op">:</span>
+    chauds <span class="op">=</span> []
+    <span class="kw">for</span> t <span class="kw">in</span> temps <span class="op">:</span>
+        <span class="kw">if</span> t <span class="op">&gt;=</span> <span class="num">30</span> <span class="op">:</span>
+            chauds<span class="op">.</span><span class="fn">append</span>(t)
+    <span class="ret">return</span> chauds
+
+<span class="kw">def</span> <span class="fn">frais</span>(temps) <span class="op">:</span>
+    froids <span class="op">=</span> []
+    <span class="kw">for</span> t <span class="kw">in</span> temps <span class="op">:</span>
+        <span class="kw">if</span> t <span class="op">&lt;</span> <span class="num">20</span> <span class="op">:</span>
+            froids<span class="op">.</span><span class="fn">append</span>(t)
+    <span class="ret">return</span> froids
+
+temperatures <span class="op">=</span> [<span class="num">22</span>, <span class="num">35</span>, <span class="num">18</span>, <span class="num">41</span>, <span class="num">29</span>, <span class="num">15</span>, <span class="num">38</span>, <span class="num">12</span>, <span class="num">33</span>, <span class="num">26</span>]
+<span class="bi">print</span>(<span class="fn">f</span><span class="str">"Jours de canicule (≥30°C) : {canicule(temperatures)}"</span>)
+<span class="bi">print</span>(<span class="fn">f</span><span class="str">"Jours frais (&lt;20°C) : {frais(temperatures)}"</span>)</pre>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer"><button class="done-btn" onclick="markDone('c16')"><span class="done-icon">○</span> Marquer comme fait</button></div>
+  </div>
+</div>
+
+
+<!-- ══ EXO 17 ══ -->
+<div class="card" id="c17" data-tags="for liste fonction">
+  <div class="card-header" onclick="toggle('c17')">
+    <div class="card-num">17</div>
+    <div class="card-title-block">
+      <div class="card-title">Suite de Fibonacci</div>
+      <div class="card-tags">
+        <span class="tag tag-for">boucle for</span>
+        <span class="tag tag-liste">liste</span>
+        <span class="tag tag-fonction">fonction</span>
+      </div>
+    </div>
+    <span class="card-chevron">▾</span>
+  </div>
+  <div class="card-body">
+
+    <div class="course-block">
+      <div class="section-label">📖 Ce qu'il faut savoir</div>
+      <div class="course-text">
+        <p>La suite de Fibonacci est célèbre en mathématiques. Chaque terme est la <strong>somme des deux précédents</strong> :</p>
+        <p><code>0, 1, 1, 2, 3, 5, 8, 13, 21, 34, ...</code></p>
+        <p>On part de <code>a = 0</code> et <code>b = 1</code>. À chaque étape : le nouveau terme vaut <code>a + b</code>, puis on "avance" : <code>a</code> prend la valeur de <code>b</code>, et <code>b</code> prend la valeur du nouveau terme.</p>
+        <p>L'échange simultané en Python se fait en une ligne : <code>a, b = b, a + b</code></p>
+      </div>
+    </div>
+
+    <div class="exo-content">
+      <div>
+        <div class="section-label">Énoncé</div>
+        <p class="consigne">
+          Écris une fonction <code>fibonacci(n)</code> qui retourne la liste des <code>n</code> premiers termes de la suite de Fibonacci.
+          <br><br>
+          Teste avec <code>fibonacci(10)</code>.
+        </p>
+      </div>
+      <div class="expected-box">
+        <div class="section-label">Sortie attendue</div>
+        <pre>fibonacci(10) = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]</pre>
+      </div>
+    </div>
+
+    <div class="accordion-wrap">
+      <div class="accordion hint" id="h17">
+        <div class="accordion-header" onclick="toggleAcc('h17')">💡 Indices <span class="accordion-icon">▾</span></div>
+        <div class="accordion-body">
+          <div class="hint-list">
+            <div class="hint-step"><span class="hint-step-num">1</span><span>Commence avec <code>a, b = 0, 1</code> et une liste vide <code>suite = []</code>.</span></div>
+            <div class="hint-step"><span class="hint-step-num">2</span><span>Boucle <code>for i in range(n) :</code></span></div>
+            <div class="hint-step"><span class="hint-step-num">3</span><span>Dans la boucle : <code>suite.append(a)</code> puis <code>a, b = b, a + b</code></span></div>
+            <div class="hint-step"><span class="hint-step-num">4</span><span>Retourne <code>suite</code>.</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion correction" id="corr17">
+        <div class="accordion-header" onclick="toggleAcc('corr17')">✅ Correction <span class="accordion-icon">▾</span></div>
+        <div class="accordion-body">
+          <pre><span class="kw">def</span> <span class="fn">fibonacci</span>(n) <span class="op">:</span>
+    a, b <span class="op">=</span> <span class="num">0</span>, <span class="num">1</span>
+    suite <span class="op">=</span> []
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(n) <span class="op">:</span>
+        suite<span class="op">.</span><span class="fn">append</span>(a)
+        a, b <span class="op">=</span> b, a <span class="op">+</span> b
+    <span class="ret">return</span> suite
+
+<span class="bi">print</span>(<span class="fn">f</span><span class="str">"fibonacci(10) = {fibonacci(10)}"</span>)</pre>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer"><button class="done-btn" onclick="markDone('c17')"><span class="done-icon">○</span> Marquer comme fait</button></div>
+  </div>
+</div>
+
+
+<!-- ══ EXO 18 ══ -->
+<div class="card" id="c18" data-tags="chaine for fonction">
+  <div class="card-header" onclick="toggle('c18')">
+    <div class="card-num">18</div>
+    <div class="card-title-block">
+      <div class="card-title">Chiffrement de César</div>
+      <div class="card-tags">
+        <span class="tag tag-chaine" style="background:#f0e6ff;color:#6b21a8;">chaînes</span>
+        <span class="tag tag-for">boucle for</span>
+        <span class="tag tag-fonction">fonction</span>
+      </div>
+    </div>
+    <span class="card-chevron">▾</span>
+  </div>
+  <div class="card-body">
+
+    <div class="course-block">
+      <div class="section-label">📖 Ce qu'il faut savoir — ord() et chr()</div>
+      <div class="course-text">
+        <p>Chaque caractère a un code numérique. <code>ord("A")</code> → <code>65</code>, <code>ord("a")</code> → <code>97</code>.</p>
+        <p>À l'inverse, <code>chr(65)</code> → <code>"A"</code>.</p>
+        <p>Du coup, décaler une lettre de 3 positions : <code>chr(ord("A") + 3)</code> → <code>"D"</code>.</p>
+        <p>Pour rester dans l'alphabet (26 lettres) on utilise le modulo : <code>chr(ord("a") + (ord(lettre) - ord("a") + decalage) % 26)</code></p>
+        <p>Pour construire la chaîne résultat, on peut accumuler avec <code>resultat = resultat + lettre</code> ou <code>resultat += lettre</code>.</p>
+      </div>
+    </div>
+
+    <div class="exo-content">
+      <div>
+        <div class="section-label">Énoncé</div>
+        <p class="consigne">
+          Le <strong>chiffrement de César</strong> décale chaque lettre d'un message de <code>k</code> positions dans l'alphabet.
+          <br><br>
+          Écris une fonction <code>cesar(message, k)</code> qui retourne le message chiffré. Les espaces restent des espaces.
+          <br><br>
+          Teste avec <code>cesar("hello", 3)</code> → doit donner <code>"khoor"</code>.
+          <br><br>
+          <em>Bonus : écris la fonction inverse <code>dechiffrer(message, k)</code>.</em>
+        </p>
+      </div>
+      <div class="expected-box">
+        <div class="section-label">Sortie attendue</div>
+        <pre>cesar("hello", 3) = khoor
+cesar("python", 13) = clguba
+dechiffrer("khoor", 3) = hello</pre>
+      </div>
+    </div>
+
+    <div class="accordion-wrap">
+      <div class="accordion hint" id="h18">
+        <div class="accordion-header" onclick="toggleAcc('h18')">💡 Indices <span class="accordion-icon">▾</span></div>
+        <div class="accordion-body">
+          <div class="hint-list">
+            <div class="hint-step"><span class="hint-step-num">1</span><span>Crée <code>resultat = ""</code> (chaîne vide). Boucle sur chaque lettre du message.</span></div>
+            <div class="hint-step"><span class="hint-step-num">2</span><span>Si la lettre est dans l'alphabet (<code>lettre.isalpha()</code>) : applique le décalage avec le modulo 26.</span></div>
+            <div class="hint-step"><span class="hint-step-num">3</span><span>Formule : <code>chr(ord('a') + (ord(lettre) - ord('a') + k) % 26)</code></span></div>
+            <div class="hint-step"><span class="hint-step-num">4</span><span>Sinon (espace, etc.) : ajoute la lettre telle quelle.</span></div>
+            <div class="hint-step"><span class="hint-step-num">5</span><span>Pour déchiffrer : c'est juste décaler de <code>-k</code> au lieu de <code>+k</code>.</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion correction" id="corr18">
+        <div class="accordion-header" onclick="toggleAcc('corr18')">✅ Correction <span class="accordion-icon">▾</span></div>
+        <div class="accordion-body">
+          <pre><span class="kw">def</span> <span class="fn">cesar</span>(message, k) <span class="op">:</span>
+    resultat <span class="op">=</span> <span class="str">""</span>
+    <span class="kw">for</span> lettre <span class="kw">in</span> message <span class="op">:</span>
+        <span class="kw">if</span> lettre<span class="op">.</span><span class="fn">isalpha</span>() <span class="op">:</span>
+            base <span class="op">=</span> <span class="bi">ord</span>(<span class="str">'a'</span>) <span class="kw">if</span> lettre<span class="op">.</span><span class="fn">islower</span>() <span class="kw">else</span> <span class="bi">ord</span>(<span class="str">'A'</span>)
+            resultat <span class="op">+=</span> <span class="bi">chr</span>(base <span class="op">+</span> (<span class="bi">ord</span>(lettre) <span class="op">-</span> base <span class="op">+</span> k) <span class="op">%</span> <span class="num">26</span>)
+        <span class="kw">else</span> <span class="op">:</span>
+            resultat <span class="op">+=</span> lettre
+    <span class="ret">return</span> resultat
+
+<span class="kw">def</span> <span class="fn">dechiffrer</span>(message, k) <span class="op">:</span>
+    <span class="ret">return</span> <span class="fn">cesar</span>(message, <span class="op">-</span>k)
+
+<span class="bi">print</span>(<span class="fn">f</span><span class="str">'cesar("hello", 3) = {cesar("hello", 3)}'</span>)
+<span class="bi">print</span>(<span class="fn">f</span><span class="str">'cesar("python", 13) = {cesar("python", 13)}'</span>)
+<span class="bi">print</span>(<span class="fn">f</span><span class="str">'dechiffrer("khoor", 3) = {dechiffrer("khoor", 3)}'</span>)</pre>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer"><button class="done-btn" onclick="markDone('c18')"><span class="done-icon">○</span> Marquer comme fait</button></div>
+  </div>
+</div>
+
+
+<!-- ══ EXO 19 ══ -->
+<div class="card" id="c19" data-tags="for liste fonction">
+  <div class="card-header" onclick="toggle('c19')">
+    <div class="card-num">19</div>
+    <div class="card-title-block">
+      <div class="card-title">Stat sur une liste</div>
+      <div class="card-tags">
+        <span class="tag tag-liste">liste</span>
+        <span class="tag tag-for">boucle for</span>
+        <span class="tag tag-fonction">fonction</span>
+      </div>
+    </div>
+    <span class="card-chevron">▾</span>
+  </div>
+  <div class="card-body">
+
+    <div class="course-block">
+      <div class="section-label">📖 Ce qu'il faut savoir — récapitulatif listes</div>
+      <div class="course-text">
+        <p>On a vu comment parcourir une liste, filtrer, accumuler. Voici quelques rappels :</p>
+        <p>— <code>for x in liste</code> : parcourt les valeurs<br>
+        — <code>for i in range(len(liste))</code> : parcourt les indices<br>
+        — <code>liste.append(x)</code> : ajoute un élément<br>
+        — <code>liste[i]</code> : accède à l'élément à l'indice i<br>
+        — <code>len(liste)</code> : nombre d'éléments</p>
+      </div>
+    </div>
+
+    <div class="exo-content">
+      <div>
+        <div class="section-label">Énoncé</div>
+        <p class="consigne">
+          On te donne une liste de temps (en secondes) pour 8 coureurs :<br>
+          <code>temps = [58, 72, 64, 55, 81, 60, 67, 53]</code>
+          <br><br>
+          Écris ces fonctions :<br><br>
+          — <code>plus_rapide(temps)</code> : retourne le temps minimum<br>
+          — <code>plus_lent(temps)</code> : retourne le temps maximum<br>
+          — <code>temps_moyen(temps)</code> : retourne la moyenne<br>
+          — <code>podium(temps)</code> : retourne une liste des 3 meilleurs temps (triés du plus petit au plus grand)<br><br>
+          <em>Pour trier une liste : <code>sorted(liste)</code> retourne une nouvelle liste triée.</em>
+        </p>
+      </div>
+      <div class="expected-box">
+        <div class="section-label">Sortie attendue</div>
+        <pre>Plus rapide : 53s
+Plus lent : 81s
+Temps moyen : 63.75s
+Podium : [53, 55, 58]</pre>
+      </div>
+    </div>
+
+    <div class="accordion-wrap">
+      <div class="accordion hint" id="h19">
+        <div class="accordion-header" onclick="toggleAcc('h19')">💡 Indices <span class="accordion-icon">▾</span></div>
+        <div class="accordion-body">
+          <div class="hint-list">
+            <div class="hint-step"><span class="hint-step-num">1</span><span>Pour <code>plus_rapide</code> : initialise <code>mini = temps[0]</code>, boucle et compare <code>if t < mini : mini = t</code>.</span></div>
+            <div class="hint-step"><span class="hint-step-num">2</span><span>Même logique pour <code>plus_lent</code> avec <code>></code>.</span></div>
+            <div class="hint-step"><span class="hint-step-num">3</span><span>Pour la moyenne : somme / longueur (comme l'exo 9 de la série 1).</span></div>
+            <div class="hint-step"><span class="hint-step-num">4</span><span>Pour le podium : <code>trie = sorted(temps)</code> puis retourne <code>trie[0:3]</code> (les 3 premiers éléments).</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion correction" id="corr19">
+        <div class="accordion-header" onclick="toggleAcc('corr19')">✅ Correction <span class="accordion-icon">▾</span></div>
+        <div class="accordion-body">
+          <pre><span class="kw">def</span> <span class="fn">plus_rapide</span>(temps) <span class="op">:</span>
+    mini <span class="op">=</span> temps[<span class="num">0</span>]
+    <span class="kw">for</span> t <span class="kw">in</span> temps <span class="op">:</span>
+        <span class="kw">if</span> t <span class="op">&lt;</span> mini <span class="op">:</span>
+            mini <span class="op">=</span> t
+    <span class="ret">return</span> mini
+
+<span class="kw">def</span> <span class="fn">plus_lent</span>(temps) <span class="op">:</span>
+    maxi <span class="op">=</span> temps[<span class="num">0</span>]
+    <span class="kw">for</span> t <span class="kw">in</span> temps <span class="op">:</span>
+        <span class="kw">if</span> t <span class="op">&gt;</span> maxi <span class="op">:</span>
+            maxi <span class="op">=</span> t
+    <span class="ret">return</span> maxi
+
+<span class="kw">def</span> <span class="fn">temps_moyen</span>(temps) <span class="op">:</span>
+    total <span class="op">=</span> <span class="num">0</span>
+    <span class="kw">for</span> t <span class="kw">in</span> temps <span class="op">:</span>
+        total <span class="op">+=</span> t
+    <span class="ret">return</span> total <span class="op">/</span> <span class="bi">len</span>(temps)
+
+<span class="kw">def</span> <span class="fn">podium</span>(temps) <span class="op">:</span>
+    trie <span class="op">=</span> <span class="bi">sorted</span>(temps)
+    <span class="ret">return</span> trie[<span class="num">0</span><span class="op">:</span><span class="num">3</span>]
+
+chrono <span class="op">=</span> [<span class="num">58</span>, <span class="num">72</span>, <span class="num">64</span>, <span class="num">55</span>, <span class="num">81</span>, <span class="num">60</span>, <span class="num">67</span>, <span class="num">53</span>]
+<span class="bi">print</span>(<span class="fn">f</span><span class="str">"Plus rapide : {plus_rapide(chrono)}s"</span>)
+<span class="bi">print</span>(<span class="fn">f</span><span class="str">"Plus lent : {plus_lent(chrono)}s"</span>)
+<span class="bi">print</span>(<span class="fn">f</span><span class="str">"Temps moyen : {temps_moyen(chrono)}s"</span>)
+<span class="bi">print</span>(<span class="fn">f</span><span class="str">"Podium : {podium(chrono)}"</span>)</pre>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer"><button class="done-btn" onclick="markDone('c19')"><span class="done-icon">○</span> Marquer comme fait</button></div>
+  </div>
+</div>
+
+
+<!-- ══ EXO 20 ══ -->
+<div class="card" id="c20" data-tags="while for liste fonction chaine">
+  <div class="card-header" onclick="toggle('c20')">
+    <div class="card-num">20</div>
+    <div class="card-title-block">
+      <div class="card-title">Le jeu du Fizzbuzz 🎮</div>
+      <div class="card-tags">
+        <span class="tag tag-for">boucle for</span>
+        <span class="tag tag-fonction">fonction</span>
+        <span class="tag tag-new">✦ projet récap</span>
+      </div>
+    </div>
+    <span class="card-chevron">▾</span>
+  </div>
+  <div class="card-body">
+
+    <div class="course-block">
+      <div class="section-label">📖 Récapitulatif — tout ce qu'on a vu dans les deux séries</div>
+      <div class="course-text">
+        <p>FizzBuzz est un classique de l'informatique. La règle :</p>
+        <p>— si le nombre est <strong>divisible par 3</strong> → afficher <code>"Fizz"</code><br>
+        — si le nombre est <strong>divisible par 5</strong> → afficher <code>"Buzz"</code><br>
+        — si le nombre est <strong>divisible par 3 ET par 5</strong> → afficher <code>"FizzBuzz"</code><br>
+        — sinon → afficher le nombre lui-même</p>
+        <p>C'est simple à énoncer mais il faut bien réfléchir à l'<strong>ordre des conditions</strong>. Pense à tester FizzBuzz <em>avant</em> Fizz et Buzz !</p>
+      </div>
+    </div>
+
+    <div class="exo-content">
+      <div>
+        <div class="section-label">Énoncé</div>
+        <p class="consigne">
+          Écris une fonction <code>fizzbuzz(n)</code> qui retourne la chaîne <code>"Fizz"</code>, <code>"Buzz"</code>, <code>"FizzBuzz"</code>, ou le nombre converti en chaîne selon les règles ci-dessus.
+          <br><br>
+          Ensuite, appelle-la pour chaque nombre de 1 à 30 et affiche les résultats.
+          <br><br>
+          <em>Bonus : stocke les résultats dans une liste avec <code>append</code> et affiche la liste en une seule fois.</em>
+        </p>
+      </div>
+      <div class="expected-box">
+        <div class="section-label">Sortie attendue (extrait)</div>
+        <pre>1, 2, Fizz, 4, Buzz, Fizz, 7, 8, Fizz, Buzz, 11, Fizz, 13, 14, FizzBuzz, 16, ...</pre>
+      </div>
+    </div>
+
+    <div class="accordion-wrap">
+      <div class="accordion hint" id="h20">
+        <div class="accordion-header" onclick="toggleAcc('h20')">💡 Indices <span class="accordion-icon">▾</span></div>
+        <div class="accordion-body">
+          <div class="hint-list">
+            <div class="hint-step"><span class="hint-step-num">1</span><span>Dans la fonction <code>fizzbuzz(n)</code> : teste d'abord <code>if n % 3 == 0 and n % 5 == 0</code> → <code>"FizzBuzz"</code>.</span></div>
+            <div class="hint-step"><span class="hint-step-num">2</span><span>Ensuite <code>elif n % 3 == 0</code> → <code>"Fizz"</code>, <code>elif n % 5 == 0</code> → <code>"Buzz"</code>.</span></div>
+            <div class="hint-step"><span class="hint-step-num">3</span><span>Sinon → <code>return str(n)</code> (<code>str()</code> convertit un nombre en chaîne).</span></div>
+            <div class="hint-step"><span class="hint-step-num">4</span><span>Pour afficher sur une ligne : accumule les résultats dans une liste, puis <code>print(", ".join(resultats))</code>.</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion correction" id="corr20">
+        <div class="accordion-header" onclick="toggleAcc('corr20')">✅ Correction <span class="accordion-icon">▾</span></div>
+        <div class="accordion-body">
+          <pre><span class="kw">def</span> <span class="fn">fizzbuzz</span>(n) <span class="op">:</span>
+    <span class="kw">if</span> n <span class="op">%</span> <span class="num">3</span> <span class="op">==</span> <span class="num">0</span> <span class="kw">and</span> n <span class="op">%</span> <span class="num">5</span> <span class="op">==</span> <span class="num">0</span> <span class="op">:</span>
+        <span class="ret">return</span> <span class="str">"FizzBuzz"</span>
+    <span class="kw">elif</span> n <span class="op">%</span> <span class="num">3</span> <span class="op">==</span> <span class="num">0</span> <span class="op">:</span>
+        <span class="ret">return</span> <span class="str">"Fizz"</span>
+    <span class="kw">elif</span> n <span class="op">%</span> <span class="num">5</span> <span class="op">==</span> <span class="num">0</span> <span class="op">:</span>
+        <span class="ret">return</span> <span class="str">"Buzz"</span>
+    <span class="kw">else</span> <span class="op">:</span>
+        <span class="ret">return</span> <span class="bi">str</span>(n)
+
+<span class="cm"># Affichage</span>
+resultats <span class="op">=</span> []
+<span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(<span class="num">1</span>, <span class="num">31</span>) <span class="op">:</span>
+    resultats<span class="op">.</span><span class="fn">append</span>(<span class="fn">fizzbuzz</span>(i))
+
+<span class="bi">print</span>(<span class="str">", "</span><span class="op">.</span><span class="fn">join</span>(resultats))</pre>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer"><button class="done-btn" onclick="markDone('c20')"><span class="done-icon">○</span> Marquer comme fait</button></div>
+  </div>
+</div>
+
+</main>
+
+<script>
+const TOTAL = 10;
+const done = new Set(JSON.parse(localStorage.getItem('py_s2_done') || '[]'));
+
+document.addEventListener('DOMContentLoaded', () => {
+  done.forEach(id => applyDone(id));
+  updateProgress();
+});
+
+function toggle(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+
+function toggleAcc(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+
+function markDone(id) {
+  if (done.has(id)) {
+    done.delete(id);
+    const card = document.getElementById(id);
+    card.classList.remove('done');
+    const btn = card.querySelector('.done-btn');
+    btn.querySelector('.done-icon').textContent = '○';
+    btn.childNodes[1].textContent = ' Marquer comme fait';
+  } else {
+    done.add(id);
+    applyDone(id);
+  }
+  localStorage.setItem('py_s2_done', JSON.stringify([...done]));
+  updateProgress();
+}
+
+function applyDone(id) {
+  const card = document.getElementById(id);
+  if (!card) return;
+  card.classList.add('done');
+  const btn = card.querySelector('.done-btn');
+  btn.querySelector('.done-icon').textContent = '✓';
+  btn.childNodes[1].textContent = ' Exercice complété !';
+}
+
+function updateProgress() {
+  const n = done.size;
+  document.getElementById('progressBar').style.width = (n / TOTAL * 100) + '%';
+  document.getElementById('progressTxt').textContent = n + ' / ' + TOTAL;
+}
+
+function filter(tag, el) {
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.card').forEach(card => {
+    if (tag === 'all' || card.dataset.tags.includes(tag)) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+      card.classList.remove('open');
+    }
+  });
+}
+</script>
+</body>
+</html>
